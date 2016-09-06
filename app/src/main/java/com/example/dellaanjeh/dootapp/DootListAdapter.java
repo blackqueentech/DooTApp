@@ -43,25 +43,25 @@ public class DootListAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.tasklayout, null);
+            convertView = inflater.inflate(R.layout.doot_layout, null);
 
         }
 
-        TextView tvTaskName = (TextView) convertView.findViewById(R.id.tvTaskName);
-        tvTaskName.setText(item.getName());
-        TextView tvDueDate = (TextView) convertView.findViewById(R.id.tvDate);
-        tvDueDate.setText(item.getDooDate());
+        TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
+        tvName.setText(item.getName());
+        TextView tvDooDate = (TextView) convertView.findViewById(R.id.tvDate);
+        tvDooDate.setText(item.getDooDate());
 
-        if (item.getStatus().equals("Completed")) {
-            tvTaskName.setPaintFlags(tvTaskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        if (item.getStatus().equals("Done")) {
+            tvName.setPaintFlags(tvName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }else{
-            tvTaskName.setPaintFlags(tvTaskName.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            tvName.setPaintFlags(tvName.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
         return convertView;
     }
 
-    public void setTodoList(ArrayList<Doot> dootList) {
+    public void setDootList(ArrayList<Doot> dootList) {
         this.dootList = dootList;
         notifyDataSetChanged();
     }

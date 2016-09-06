@@ -51,22 +51,22 @@ public class DBHelper extends SQLiteOpenHelper {
      * This method adds a record to the database. All we pass in is the todo
      * text
      */
-    public long addTask(String name, String dueDate, String notes, String status, String priority) {
+    public long addDoot(String name, String dooDate, String notes, String status, String priority) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN2, name);
-        cv.put(COLUMN3, dueDate);
+        cv.put(COLUMN3, dooDate);
         cv.put(COLUMN4, notes);
         cv.put(COLUMN5, status);
         cv.put(COLUMN6, priority);
         return db.insert(DATABASE_TABLE_NAME, null, cv);
     }
 
-    public long editTask(Integer id, String name, String dueDate, String notes, String status, String priority) {
+    public long editDoot(Integer id, String name, String dooDate, String notes, String status, String priority) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN2, name);
-        cv.put(COLUMN3, dueDate);
+        cv.put(COLUMN3, dooDate);
         cv.put(COLUMN4, notes);
         cv.put(COLUMN5, status);
         cv.put(COLUMN6, priority);

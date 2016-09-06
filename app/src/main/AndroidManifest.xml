@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DootDetailsActivity"></activity>
+        <activity android:name=".DootDetailsActivity" />
+        <activity android:name=".EditActivity" />
+        <activity android:name=".SplashActivity" />
+        <activity android:name=".AddToListDialog"></activity>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -52,5 +54,12 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvDooDate.setText(doot.getDooDate());
         tvNotes.setText(doot.getNotes());
         tvStatus.setText(doot.getStatus());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.details_menu, menu);
+        return true;
     }
 }
