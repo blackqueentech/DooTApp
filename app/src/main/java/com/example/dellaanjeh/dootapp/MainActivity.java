@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements AddToListDialog.AddToListListener {
 
@@ -26,11 +24,9 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
     ListView lvDoots;
     ArrayList<Doot> list;
     DootListAdapter adapter;
-    // TODO: activity crashes due to trying to use an outside view
-    // can't figure out how to inject
-    @BindView(R.id.tvEmptyList) TextView tvEmptyList;
+    TextView tvEmptyList;
     DBHelper dh;
-    @BindView(R.id.btnAdd) Button btnAdd;
+    Button btnAdd;
     FragmentManager fm = getSupportFragmentManager();
 
     @Override
@@ -38,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         View emptyView = findViewById(R.id.empty);
+        lvDoots = (ListView) findViewById(R.id.lvDoots);
         sqlHandler = new SQLHandler(this);
         dh = new DBHelper(this);
         list = dh.getAllDoots();

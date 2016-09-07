@@ -21,26 +21,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 public class AddToListDialog extends DialogFragment {
 
-    @BindView(R.id.tvName) TextView tvName;
-    @BindView(R.id.tvPriority) TextView tvPriority;
-    @BindView(R.id.tvNotes) TextView tvTaskNotes;
-    @BindView(R.id.tvStatus) TextView tvStatus;
-    @BindView(R.id.tvDooDate) TextView tvDooDate;
-    @BindView(R.id.etName) EditText etName;
-    @BindView(R.id.etNotes) EditText etNotes;
-    @BindView(R.id.etDooDate) EditText etDooDate;
-    @BindView(R.id.btnAdd) Button btnAdd;
-
+    TextView tvName;
+    TextView tvPriority;
+    TextView tvNotes;
+    TextView tvStatus;
+    TextView tvDooDate;
+    EditText etName;
+    EditText etNotes;
+    EditText etDooDate;
+    Button btnAdd;
     DBHelper dbHelper;
     ListView lvDoots;
-    @BindView(R.id.spStatus) Spinner spStatus;
-    @BindView(R.id.spPriority) Spinner spPriority;
+    Spinner spStatus;
+    Spinner spPriority;
     String[] statuses, priorities;
     DatePickerDialog dooDatePicker;
     SimpleDateFormat dateFormat;
@@ -55,7 +50,13 @@ public class AddToListDialog extends DialogFragment {
                 false);
         View mainView = inflater.inflate(R.layout.activity_main, container, false);
         getDialog().setTitle("Add to your Doots");
-        ButterKnife.bind(this, rootView);
+
+        lvDoots = (ListView) mainView.findViewById(R.id.lvDoots);
+        tvName = (TextView) rootView.findViewById(R.id.tvName);
+        etName = (EditText) rootView.findViewById(R.id.etName);
+
+        tvDooDate = (TextView) rootView.findViewById(R.id.tvDooDate);
+        etDooDate = (EditText) rootView.findViewById(R.id.etDooDate);
         lvDoots = (ListView) mainView.findViewById(R.id.lvDoots);
         dbHelper = new DBHelper(getActivity());
         etDooDate.setOnClickListener(new View.OnClickListener() {
@@ -76,15 +77,24 @@ public class AddToListDialog extends DialogFragment {
         });
 
         dateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+        tvNotes = (TextView) rootView.findViewById(R.id.tvNotes);
+        etNotes = (EditText) rootView.findViewById(R.id.etNotes);
 
+        tvStatus = (TextView) rootView.findViewById(R.id.tvStatus);
+        spStatus = (Spinner) rootView.findViewById(R.id.spStatus);
         statuses = new String[]{"To Do", "Done"};
         statusAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, statuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spStatus.setAdapter(statusAdapter);
 
+        tvPriority = (TextView) rootView.findViewById(R.id.tvPriority);
+        spPriority = (Spinner) rootView.findViewById(R.id.spPriority);
         priorities = new String[]{"Low", "Medium", "High"};
         priorityAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, priorities);
         priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPriority.setAdapter(priorityAdapter);
 
+        btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
