@@ -78,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public ArrayList<Doot> getAllDoots() {
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Doot> todoList = new ArrayList<Doot>();
+        ArrayList<Doot> dootList = new ArrayList<Doot>();
 
         Cursor cursor = db.rawQuery("SELECT * from " + DATABASE_TABLE_NAME,
                 new String[] {});
@@ -94,19 +94,19 @@ public class DBHelper extends SQLiteOpenHelper {
                 doot.status = cursor.getString(cursor.getColumnIndex(COLUMN5));
                 doot.priority = cursor.getString(cursor.getColumnIndex(COLUMN6));
 
-                todoList.add(doot);
+                dootList.add(doot);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
 
-        return todoList;
+        return dootList;
     }
 
     public Doot getDoot(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(DATABASE_TABLE_NAME, new String[]{COLUMN1, COLUMN2, COLUMN3, COLUMN4, COLUMN5}, COLUMN1 + "=?", new String[]{"" + id},null,null,null,null);
+        Cursor cursor = db.query(DATABASE_TABLE_NAME, new String[]{COLUMN1, COLUMN2, COLUMN3, COLUMN4, COLUMN5, COLUMN6}, COLUMN1 + "=?", new String[]{"" + id},null,null,null,null);
         if(cursor.moveToFirst()){
             Doot doot = new Doot();
             doot.id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN1));
