@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         setContentView(R.layout.activity_main);
         View emptyView = findViewById(R.id.empty);
         lvDoots = (ListView) findViewById(R.id.lvDoots);
+
         sqlHandler = new SQLHandler(this);
         dh = new DBHelper(this);
         list = dh.getAllDoots();
@@ -67,25 +68,6 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
 
         lvDoots.setEmptyView(tvEmptyList);
     }
-
-    // tried doing this, didn't seem to work.
-//    static class ViewHolder {
-//        @BindView(R.id.btnAdd) Button btnAdd;
-//        @BindView(R.id.tvEmptyList) TextView tvEmptyList;
-//
-//        FragmentManager fm = getSupportFragmentManager();
-//        public ViewHolder(View view) {
-//            btnAdd.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    AddToListDialog dialog = new AddToListDialog();
-//                    dialog.show(fm, "New Doot");
-//                }
-//            });
-//            ButterKnife.bind(this, view);
-//        }
-//
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

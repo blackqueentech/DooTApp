@@ -44,6 +44,7 @@ public class DootDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doot_details);
+
         tvNameLabel = (TextView) findViewById(R.id.tvNameLabel);
         tvName = (TextView) findViewById(R.id.tvName);
         tvPriorityLabel = (TextView) findViewById(R.id.tvPriorityLabel);
@@ -128,10 +129,10 @@ public class DootDetailsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Doot doot = helper.getDoot(id);
         tvName.setText(doot.getName());
-        tvPriority.setText(doot.getPriority());
         tvDooDate.setText(doot.getDooDate());
         tvNotes.setText(doot.getNotes());
         tvStatus.setText(doot.getStatus());
+        tvPriority.setText(doot.getPriority());
     }
 
     @Override
