@@ -73,6 +73,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.update(DATABASE_TABLE_NAME, cv, COLUMN1 + "=?", new String[]{id.toString()});
     }
 
+    public long changeDootStatus(Integer id, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN5, status);
+        return db.update(DATABASE_TABLE_NAME, cv, COLUMN1 + "=?", new String[]{id.toString()});
+    }
+
     /**
      * //This method returns all notes from the database
      */

@@ -12,7 +12,7 @@
         <activity android:name=".DootDetailsActivity" />
         <activity android:name=".EditActivity" />
         <activity android:name=".SplashActivity"
-            android:label="@string/app_name"
+            android:label="DooT"
             android:theme="@style/SplashTheme">
 
             <intent-filter>

@@ -6,12 +6,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
+import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import org.w3c.dom.Text;
 
@@ -20,12 +26,6 @@ import java.util.ArrayList;
 public class DootDetailsActivity extends AppCompatActivity {
 
     private static final int EDIT_REQUEST = 123;
-    // labels
-    TextView tvNameLabel;
-    TextView tvDooDateLabel;
-    TextView tvStatusLabel;
-    TextView tvNotesLabel;
-    TextView tvPriorityLabel;
     // values
     TextView tvName;
     TextView tvDooDate;
@@ -34,6 +34,7 @@ public class DootDetailsActivity extends AppCompatActivity {
     TextView tvPriority;
     String name, dooDate, status, notes, priority;
     DBHelper helper;
+    Button btnDone;
     DootListAdapter adapter;
     ArrayList<Doot> dootList;
     Integer id;
@@ -45,16 +46,12 @@ public class DootDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doot_details);
 
-        tvNameLabel = (TextView) findViewById(R.id.tvNameLabel);
         tvName = (TextView) findViewById(R.id.tvName);
-        tvPriorityLabel = (TextView) findViewById(R.id.tvPriorityLabel);
         tvPriority = (TextView) findViewById(R.id.tvPriority);
-        tvDooDateLabel = (TextView) findViewById(R.id.tvDooDateLabel);
         tvDooDate = (TextView) findViewById(R.id.tvDooDate);
-        tvStatusLabel = (TextView) findViewById(R.id.tvStatusLabel);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
-        tvNotesLabel = (TextView) findViewById(R.id.tvNotesLabel);
         tvNotes = (TextView) findViewById(R.id.tvNotes);
+        btnDone = (Button) findViewById(R.id.btnDone);
         adapter = new DootListAdapter(DootDetailsActivity.this, dootList);
         helper = new DBHelper(this);
 
@@ -73,6 +70,41 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvDooDate.setText(dooDate);
         tvNotes.setText(notes);
         tvStatus.setText(status);
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!status.equals("Done")) {
+                    helper.changeDootStatus(id, "Done");
+                    DootDetailsActivity.this.finish();
+                    Toast.makeText(getBaseContext(), "Nice, you finished your doot!", Toast.LENGTH_SHORT).show();
+                } else {
+                    helper.changeDootStatus(id, "To Do");
+                    DootDetailsActivity.this.finish();
+                    Toast.makeText(getBaseContext(), "Doot updated!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void showDeleteDialog() {
+        new LovelyStandardDialog(this)
+                .setTopColorRes(R.color.delete)
+                .setButtonsColorRes(R.color.primary_dark)
+                .setIcon(R.drawable.trash)
+                .setTitle("Are you sure you want to delete your doot?")
+                .setMessage("It will be gone. Forever.")
+                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(Integer.toString(id), "doot ID");
+                        helper.deleteDoot(id);
+                        DootDetailsActivity.this.finish();
+                        Toast.makeText(getBaseContext(), "Doot deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
     }
 
     @Override
@@ -109,6 +141,7 @@ public class DootDetailsActivity extends AppCompatActivity {
 //            AlertDialog alertDialog = alertDialogBuilder.create();
 //            alertDialog.setTitle("Are you sure you want to delete this task?");
 //            alertDialog.show();
+            showDeleteDialog();
         } else if(item.getItemId() == R.id.action_edit) {
             Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
             intent.putExtra("EXTRA_ID", id);

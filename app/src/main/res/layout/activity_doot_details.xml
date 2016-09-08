@@ -8,88 +8,68 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context="com.example.dellaanjeh.dootapp.DootDetailsActivity">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:id="@+id/tvNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:textSize="18dp"
-            android:text="Doot Name"
-            android:textStyle="bold"
-            android:textColor="#000000"/>
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_gravity="right"
-            android:text="a name"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvName"
+        android:text="a name"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:textColor="@color/primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="5dp"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp">
 
-        <TextView
-            android:id="@+id/tvPriorityLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:textSize="18dp"
-            android:text="Priority"
-            android:textStyle="bold"
-            android:textColor="#000000"/>
+        <ImageView
+            android:id="@+id/ivPriority"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/priority"
+            android:paddingRight="10dp"/>
 
         <TextView
             android:id="@+id/tvPriority"
-            android:layout_gravity="right"
             android:text="----"
             android:textSize="18dp"
-            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:paddingTop="8dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="5dp"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp">
 
-        <TextView
-            android:id="@+id/tvDooDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:textSize="18dp"
-            android:text="Doo Date"
-            android:textStyle="bold"
-            android:textColor="#000000"/>
+        <ImageView
+            android:id="@+id/ivDate"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/date"
+            android:paddingRight="10dp"/>
 
         <TextView
             android:id="@+id/tvDooDate"
-            android:layout_gravity="right"
             android:text="00-00-0000"
             android:textSize="18dp"
-            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:paddingTop="8dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content" />
-
-
 
     </LinearLayout>
 
@@ -97,55 +77,42 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="5dp"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp">
 
-        <TextView
-            android:id="@+id/tvStatusLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:textSize="18dp"
-            android:text="Status"
-            android:textStyle="bold"
-            android:textColor="#000000"/>
+        <ImageView
+            android:id="@+id/ivStatus"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/status"
+            android:paddingRight="10dp"/>
 
         <TextView
             android:id="@+id/tvStatus"
-            android:layout_gravity="right"
             android:text="Completed"
             android:textSize="18dp"
-            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:paddingTop="8dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+
+    <TextView
+        android:id="@+id/tvNotes"
+        android:textStyle="italic"
+        android:text="Some notes about this dooT"
+        android:textSize="18dp"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:id="@+id/tvNotesLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:textSize="18dp"
-            android:text="Notes"
-            android:textStyle="bold"
-            android:textColor="#000000"/>
-
-        <TextView
-            android:id="@+id/tvNotes"
-            android:layout_gravity="end"
-            android:textAlignment="textEnd"
-            android:text="Some notes about this dooT"
-            android:textSize="18dp"
-            android:layout_width="225dp"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        android:id="@+id/btnDone"
+        android:text="Done"/>
 
 </LinearLayout>

@@ -12,4 +12,8 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
+    <style name="EditTextTintTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/primary_dark</item>
+    </style>
+
 </resources>
