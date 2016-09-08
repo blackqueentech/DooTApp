@@ -1,6 +1,7 @@
 package com.example.dellaanjeh.dootapp;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
     TextView tvEmptyList;
     DBHelper dh;
     Button btnAdd;
+    FloatingActionButton fab;
     FragmentManager fm = getSupportFragmentManager();
 
     @Override
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         setContentView(R.layout.activity_main);
         View emptyView = findViewById(R.id.empty);
         lvDoots = (ListView) findViewById(R.id.lvDoots);
-
+        fab = (FloatingActionButton) findViewById(R.id.fabAdd);
         sqlHandler = new SQLHandler(this);
         dh = new DBHelper(this);
         list = dh.getAllDoots();
@@ -57,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         });
 
         tvEmptyList = (TextView) emptyView.findViewById(R.id.tvEmptyList);
-        btnAdd = (Button) emptyView.findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AddToListDialog dialog = new AddToListDialog();
@@ -67,23 +68,6 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         });
 
         lvDoots.setEmptyView(tvEmptyList);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_add){
-            AddToListDialog dialog = new AddToListDialog();
-            dialog.show(fm, "Create Doot");
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
