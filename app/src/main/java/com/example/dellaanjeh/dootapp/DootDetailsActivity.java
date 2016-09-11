@@ -1,7 +1,9 @@
 package com.example.dellaanjeh.dootapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationItem;
+import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView;
+import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItemClickListener;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
@@ -38,6 +43,7 @@ public class DootDetailsActivity extends AppCompatActivity {
     DootListAdapter adapter;
     ArrayList<Doot> dootList;
     Integer id;
+    BottomNavigationView navbar;
     final Context context = this;
 
 
@@ -82,6 +88,32 @@ public class DootDetailsActivity extends AppCompatActivity {
                     helper.changeDootStatus(id, "To Do");
                     DootDetailsActivity.this.finish();
                     Toast.makeText(getBaseContext(), "Doot updated!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        navbar = (BottomNavigationView) findViewById(R.id.navbar);
+        BottomNavigationItem edit = new BottomNavigationItem
+                ("Edit", ContextCompat.getColor(this, R.color.primary), R.drawable.edit);
+        BottomNavigationItem delete = new BottomNavigationItem
+                ("Delete", ContextCompat.getColor(this, R.color.primary), R.drawable.trash);
+        navbar.addTab(edit);
+        navbar.addTab(delete);
+
+        navbar.setOnBottomNavigationItemClickListener(new OnBottomNavigationItemClickListener() {
+            @Override
+            public void onNavigationItemClick(int index) {
+                if (index == 0) {
+                    Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
+                    intent.putExtra("EXTRA_ID", id);
+                    intent.putExtra("EXTRA_NAME", name);
+                    intent.putExtra("EXTRA_DOO_DATE", dooDate);
+                    intent.putExtra("EXTRA_PRIORITY", priority);
+                    intent.putExtra("EXTRA_STATUS", status);
+                    intent.putExtra("EXTRA_NOTES", notes);
+                    startActivityForResult(intent, EDIT_REQUEST);
+                } else if (index == 1) {
+                    showDeleteDialog();
                 }
             }
         });

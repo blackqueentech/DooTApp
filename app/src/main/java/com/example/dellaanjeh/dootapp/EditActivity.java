@@ -2,8 +2,10 @@ package com.example.dellaanjeh.dootapp;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,10 +14,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationItem;
+import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView;
+import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItemClickListener;
+import com.michaldrabik.tapbarmenulib.TapBarMenu;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,7 +42,9 @@ public class EditActivity extends AppCompatActivity {
     ArrayAdapter<String> statusAdapter, priorityAdapter;
     String name, priority, dooDate, status, notes;
     Integer id;
+    BottomNavigationView navbar;
 
+    DBHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +104,58 @@ public class EditActivity extends AppCompatActivity {
         spStatus.setSelection(getIndex(spStatus, status));
         spStatus.setAdapter(statusAdapter);
         dbHelper = new DBHelper(this);
+
+        navbar = (BottomNavigationView) findViewById(R.id.navbar);
+        BottomNavigationItem save = new BottomNavigationItem
+                ("Save", ContextCompat.getColor(this, R.color.primary), R.drawable.save);
+        BottomNavigationItem delete = new BottomNavigationItem
+                ("Delete", ContextCompat.getColor(this, R.color.primary), R.drawable.trash);
+        navbar.addTab(save);
+        navbar.addTab(delete);
+
+
+        navbar.setOnBottomNavigationItemClickListener(new OnBottomNavigationItemClickListener() {
+            @Override
+            public void onNavigationItemClick(int index) {
+                switch (index) {
+                    case 0:
+                        String name = etName.getText().toString();
+                        String notes = etNotes.getText().toString();
+                        String status = String.valueOf(spStatus.getSelectedItem());
+                        String doodate = etDooDate.getText().toString();
+                        String priority = String.valueOf(spPriority.getSelectedItem());
+                        dbHelper.editDoot(id, name, doodate, notes, status, priority);
+                        setResult(Activity.RESULT_OK);
+                        EditActivity.this.finish();
+                        Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        showDeleteDialog();
+                        break;
+                }
+            }
+        });
+
+    }
+
+    private void showDeleteDialog() {
+        new LovelyStandardDialog(this)
+                .setTopColorRes(R.color.delete)
+                .setButtonsColorRes(R.color.primary_dark)
+                .setIcon(R.drawable.trash)
+                .setTitle("Are you sure you want to delete your doot?")
+                .setMessage("This is a strong edit.")
+                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(Integer.toString(id), "doot ID");
+                        helper.deleteDoot(id);
+                        EditActivity.this.finish();
+                        Toast.makeText(getBaseContext(), "Doot deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
     }
 
     private int getIndex(Spinner spinner, String myString) {
