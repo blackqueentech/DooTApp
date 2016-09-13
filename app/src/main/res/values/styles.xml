@@ -16,4 +16,9 @@
         <item name="colorAccent">@color/primary_dark</item>
     </style>
 
+    <style name="menu_labels_style">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
+
 </resources>

@@ -2,7 +2,10 @@ package com.example.dellaanjeh.dootapp;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +26,19 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
 
     private static final int DETAILS_ACTIVITY = 321;
     SQLHandler sqlHandler;
-    ListView lvDoots;
+    ListView lvDoots, lvNavList;
+    RelativeLayout navPane;
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
     ArrayList<Doot> list;
+    ArrayList<NavItem> navList = new ArrayList<NavItem>();
     DootListAdapter adapter;
     TextView tvEmptyList;
     DBHelper dh;
     Button btnAdd;
     FloatingActionButton fab;
     FragmentManager fm = getSupportFragmentManager();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,42 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         });
 
         lvDoots.setEmptyView(tvEmptyList);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navPane = (RelativeLayout) findViewById(R.id.navPane);
+        navList.add(new NavItem("Add", "The more doots, the better", R.drawable.priority));
+        navList.add(new NavItem("All Done", "Check off the whole list!", R.drawable.status));
+        lvNavList = (ListView) findViewById(R.id.lvNavList);
+        NavAdapter navAdapter = new NavAdapter(this, navList);
+        lvNavList.setAdapter(navAdapter);
+        lvNavList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectItemFromDrawer(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    private void selectItemFromDrawer(int position) {
+        Fragment fragment = new PreferencesFragment();
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+
+        lvNavList.setItemChecked(position, true);
+        setTitle(navList.get(position).navTitle);
+
+        // Close the drawer
+        drawerLayout.closeDrawer(navPane);
     }
 
     @Override
