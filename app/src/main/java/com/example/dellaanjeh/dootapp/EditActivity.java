@@ -220,7 +220,7 @@ public class EditActivity extends AppCompatActivity {
         new LovelyStandardDialog(this)
                 .setTopColorRes(R.color.delete)
                 .setButtonsColorRes(R.color.primary_dark)
-                .setIcon(R.drawable.trash)
+                .setIcon(R.drawable.white_trash)
                 .setTitle("Are you sure you want to delete your doot?")
                 .setMessage("This is a strong edit.")
                 .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
