@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sackcentury.shinebuttonlib.ShineButton;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
@@ -44,6 +46,7 @@ public class DootDetailsActivity extends AppCompatActivity {
     String name, dooDate, status, notes, priority;
     DBHelper helper;
     Button btnDone;
+    ShineButton sbtnDone;
     DootListAdapter adapter;
     ArrayList<Doot> dootList;
     Integer id;
@@ -68,7 +71,6 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvDooDate = (TextView) findViewById(R.id.tvDooDate);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
         tvNotes = (TextView) findViewById(R.id.tvNotes);
-        btnDone = (Button) findViewById(R.id.btnDone);
         adapter = new DootListAdapter(DootDetailsActivity.this, dootList);
         helper = new DBHelper(this);
 
@@ -88,17 +90,20 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvNotes.setText(notes);
         tvStatus.setText(status);
 
-        btnDone.setOnClickListener(new View.OnClickListener() {
+        sbtnDone = (ShineButton) findViewById(R.id.sbtnDone);
+        if (sbtnDone != null) sbtnDone.init(this);
+        sbtnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!status.equals("Done")) {
                     helper.changeDootStatus(id, "Done");
-                    DootDetailsActivity.this.finish();
-                    Toast.makeText(getBaseContext(), "Nice, you finished your doot!", Toast.LENGTH_SHORT).show();
+                    //DootDetailsActivity.this.finish();
+                    //Toast.makeText(getBaseContext(), "Nice, you finished your doot!", Toast.LENGTH_SHORT).show();
                 } else {
-                    helper.changeDootStatus(id, "To Do");
-                    DootDetailsActivity.this.finish();
-                    Toast.makeText(getBaseContext(), "Doot updated!", Toast.LENGTH_SHORT).show();
+                    sbtnDone.setVisibility(View.INVISIBLE);
+                    //helper.changeDootStatus(id, "To Do");
+                    //DootDetailsActivity.this.finish();
+                    //Toast.makeText(getBaseContext(), "Doot updated!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -106,7 +111,7 @@ public class DootDetailsActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navPane = (RelativeLayout) findViewById(R.id.navPane);
         navList.add(new NavItem("Edit", "Change up your doot", R.drawable.edit));
-        navList.add(new NavItem("Delete", "Good-bye!", R.drawable.done_all));
+        navList.add(new NavItem("Delete", "Good-bye!", R.drawable.delete));
         navList.add(new NavItem("Back to List", "See all your doots", R.drawable.list));
         lvNavList = (ListView) findViewById(R.id.lvNavList);
         final NavAdapter navAdapter = new NavAdapter(DootDetailsActivity.this, navList);
@@ -216,25 +221,6 @@ public class DootDetailsActivity extends AppCompatActivity {
                 .show();
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if(item.getItemId() == R.id.action_delete){
-//            showDeleteDialog();
-//        } else if(item.getItemId() == R.id.action_edit) {
-//            Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
-//            intent.putExtra("EXTRA_ID", id);
-//            intent.putExtra("EXTRA_NAME", name);
-//            intent.putExtra("EXTRA_DOO_DATE", dooDate);
-//            intent.putExtra("EXTRA_PRIORITY", priority);
-//            intent.putExtra("EXTRA_STATUS", status);
-//            intent.putExtra("EXTRA_NOTES", notes);
-//            startActivityForResult(intent,EDIT_REQUEST);
-//        } else if(item.getItemId() == R.id.action_back) {
-//            DootDetailsActivity.this.finish();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -245,11 +231,4 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvStatus.setText(doot.getStatus());
         tvPriority.setText(doot.getPriority());
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.details_menu, menu);
-//        return true;
-//    }
 }

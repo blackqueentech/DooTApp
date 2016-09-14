@@ -146,6 +146,17 @@
 
         </LinearLayout>
 
+        <com.sackcentury.shinebuttonlib.ShineButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/sbtnSave"
+            app:btn_color="@android:color/darker_gray"
+            app:btn_fill_color="#996699"
+            app:enable_flashing="true"
+            app:shine_size="80dp"
+            app:siShape="@drawable/save"/>
+
     </LinearLayout>
 
     <RelativeLayout

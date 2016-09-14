@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sackcentury.shinebuttonlib.ShineButton;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.text.SimpleDateFormat;
@@ -51,7 +52,7 @@ public class EditActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     FragmentManager fm = getSupportFragmentManager();
     ArrayList<NavItem> navList = new ArrayList<NavItem>();
-
+    ShineButton sbtnSave;
     DBHelper helper;
 
     @Override
@@ -59,6 +60,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("EXTRA_NAME");
@@ -113,10 +115,27 @@ public class EditActivity extends AppCompatActivity {
         spStatus.setAdapter(statusAdapter);
         dbHelper = new DBHelper(this);
 
+        sbtnSave = (ShineButton) findViewById(R.id.sbtnSave);
+        if (sbtnSave != null) sbtnSave.init(this);
+        sbtnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = etName.getText().toString();
+                String notes = etNotes.getText().toString();
+                String status = String.valueOf(spStatus.getSelectedItem());
+                String doodate = etDooDate.getText().toString();
+                String priority = String.valueOf(spPriority.getSelectedItem());
+                dbHelper.editDoot(id, name, doodate, notes, status, priority);
+                setResult(Activity.RESULT_OK);
+                //EditActivity.this.finish();
+                //Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navPane = (RelativeLayout) findViewById(R.id.navPane);
-        navList.add(new NavItem("Add", "The more doots, the better", R.drawable.plus_nav));
-        navList.add(new NavItem("All Done", "Check off the whole list!", R.drawable.done_all));
+        navList.add(new NavItem("Delete", "Good-bye!", R.drawable.delete));
+        navList.add(new NavItem("Cancel", "When you don't wanna edit anymore", R.drawable.cancel));
         lvNavList = (ListView) findViewById(R.id.lvNavList);
         final NavAdapter navAdapter = new NavAdapter(EditActivity.this, navList);
         lvNavList.setAdapter(navAdapter);
@@ -136,15 +155,11 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
-                if (item.getNavTitle().equals("Save")) {
-                    AddToListDialog dialog = new AddToListDialog();
-                    dialog.show(fm, "New Doot");
-                } else if (item.getNavTitle().equals("All Done")) {
-                    for (Doot d : dbHelper.getAllDoots()) {
-                        dbHelper.finishDoot(d.getId());
-                        // TODO: add confetti
-                    }
-                    navAdapter.notifyDataSetChanged();
+                if (item.getNavTitle().equals("Delete")) {
+                    showDeleteDialog();
+                } else if (item.getNavTitle().equals("Cancel")) {
+                    setResult(Activity.RESULT_CANCELED);
+                    EditActivity.this.finish();
                 }
                 drawerLayout.closeDrawer(navPane);
             }
@@ -187,13 +202,13 @@ public class EditActivity extends AppCompatActivity {
         drawerLayout.closeDrawer(navPane);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (drawerToggle.onOptionsItemSelected(item)) {
-//            return super.onOptionsItemSelected(item);
-//        }
-//        return true;
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -232,29 +247,4 @@ public class EditActivity extends AppCompatActivity {
         return index;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_save){
-            String name = etName.getText().toString();
-            String notes = etNotes.getText().toString();
-            String status = String.valueOf(spStatus.getSelectedItem());
-            String doodate = etDooDate.getText().toString();
-            String priority = String.valueOf(spPriority.getSelectedItem());
-            dbHelper.editDoot(id, name, doodate, notes, status, priority);
-            setResult(Activity.RESULT_OK);
-            EditActivity.this.finish();
-            Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
-        } else if(item.getItemId() == R.id.action_back) {
-            setResult(Activity.RESULT_CANCELED);
-            EditActivity.this.finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

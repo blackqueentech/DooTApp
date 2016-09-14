@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -116,13 +116,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnDone"
-            android:text="Done"/>
 
-
+        <com.sackcentury.shinebuttonlib.ShineButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/sbtnDone"
+            app:btn_color="@android:color/darker_gray"
+            app:btn_fill_color="#999933"
+            app:siShape="@drawable/check"
+            android:gravity="bottom"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
