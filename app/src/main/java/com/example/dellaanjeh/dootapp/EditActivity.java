@@ -2,7 +2,11 @@ package com.example.dellaanjeh.dootapp;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,12 +14,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +29,7 @@ import android.widget.Toast;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -38,6 +45,12 @@ public class EditActivity extends AppCompatActivity {
     ArrayAdapter<String> statusAdapter, priorityAdapter;
     String name, priority, dooDate, status, notes;
     Integer id;
+    ListView lvNavList;
+    RelativeLayout navPane;
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
+    FragmentManager fm = getSupportFragmentManager();
+    ArrayList<NavItem> navList = new ArrayList<NavItem>();
 
     DBHelper helper;
 
@@ -100,6 +113,92 @@ public class EditActivity extends AppCompatActivity {
         spStatus.setAdapter(statusAdapter);
         dbHelper = new DBHelper(this);
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navPane = (RelativeLayout) findViewById(R.id.navPane);
+        navList.add(new NavItem("Add", "The more doots, the better", R.drawable.plus_nav));
+        navList.add(new NavItem("All Done", "Check off the whole list!", R.drawable.done_all));
+        lvNavList = (ListView) findViewById(R.id.lvNavList);
+        final NavAdapter navAdapter = new NavAdapter(EditActivity.this, navList);
+        lvNavList.setAdapter(navAdapter);
+        lvNavList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectItemFromDrawer(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
+                if (item.getNavTitle().equals("Save")) {
+                    AddToListDialog dialog = new AddToListDialog();
+                    dialog.show(fm, "New Doot");
+                } else if (item.getNavTitle().equals("All Done")) {
+                    for (Doot d : dbHelper.getAllDoots()) {
+                        dbHelper.finishDoot(d.getId());
+                        // TODO: add confetti
+                    }
+                    navAdapter.notifyDataSetChanged();
+                }
+                drawerLayout.closeDrawer(navPane);
+            }
+        });
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                Log.d("something", "onDrawerClosed: " + getTitle());
+
+                invalidateOptionsMenu();
+            }
+        };
+
+        drawerLayout.addDrawerListener(drawerToggle);
+
+    }
+
+    private void selectItemFromDrawer(int position) {
+        Fragment fragment = new PreferencesFragment();
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+
+        lvNavList.setItemChecked(position, true);
+        setTitle(navList.get(position).navTitle);
+
+        // Close the drawer
+        drawerLayout.closeDrawer(navPane);
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (drawerToggle.onOptionsItemSelected(item)) {
+//            return super.onOptionsItemSelected(item);
+//        }
+//        return true;
+//    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
     private void showDeleteDialog() {

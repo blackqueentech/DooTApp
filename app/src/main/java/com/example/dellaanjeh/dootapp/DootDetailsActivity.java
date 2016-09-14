@@ -3,7 +3,11 @@ package com.example.dellaanjeh.dootapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +47,14 @@ public class DootDetailsActivity extends AppCompatActivity {
     DootListAdapter adapter;
     ArrayList<Doot> dootList;
     Integer id;
+    ListView lvNavList;
+    RelativeLayout navPane;
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
+    ArrayList<NavItem> navList = new ArrayList<NavItem>();
     final Context context = this;
+    FragmentManager fm = getSupportFragmentManager();
+
 
 
     @Override
@@ -49,6 +62,7 @@ public class DootDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doot_details);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tvName = (TextView) findViewById(R.id.tvName);
         tvPriority = (TextView) findViewById(R.id.tvPriority);
         tvDooDate = (TextView) findViewById(R.id.tvDooDate);
@@ -89,7 +103,97 @@ public class DootDetailsActivity extends AppCompatActivity {
             }
         });
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navPane = (RelativeLayout) findViewById(R.id.navPane);
+        navList.add(new NavItem("Edit", "Change up your doot", R.drawable.edit));
+        navList.add(new NavItem("Delete", "Good-bye!", R.drawable.done_all));
+        navList.add(new NavItem("Back to List", "See all your doots", R.drawable.list));
+        lvNavList = (ListView) findViewById(R.id.lvNavList);
+        final NavAdapter navAdapter = new NavAdapter(DootDetailsActivity.this, navList);
+        lvNavList.setAdapter(navAdapter);
+        lvNavList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectItemFromDrawer(position);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
+                if (item.getNavTitle().equals("Edit")) {
+                    Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
+                    intent.putExtra("EXTRA_ID", id);
+                    intent.putExtra("EXTRA_NAME", name);
+                    intent.putExtra("EXTRA_DOO_DATE", dooDate);
+                    intent.putExtra("EXTRA_PRIORITY", priority);
+                    intent.putExtra("EXTRA_STATUS", status);
+                    intent.putExtra("EXTRA_NOTES", notes);
+                    startActivityForResult(intent,EDIT_REQUEST);
+                } else if (item.getNavTitle().equals("Delete")) {
+                    showDeleteDialog();
+                } else if (item.getNavTitle().equals("Back to List")) {
+                    DootDetailsActivity.this.finish();
+                }
+                drawerLayout.closeDrawer(navPane);
+            }
+        });
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                Log.d("something", "onDrawerClosed: " + getTitle());
+
+                invalidateOptionsMenu();
+            }
+        };
+
+        drawerLayout.addDrawerListener(drawerToggle);
+
+    }
+
+    private void selectItemFromDrawer(int position) {
+        Fragment fragment = new PreferencesFragment();
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+
+        lvNavList.setItemChecked(position, true);
+        setTitle(navList.get(position).navTitle);
+
+        // Close the drawer
+        drawerLayout.closeDrawer(navPane);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
     private void showDeleteDialog() {
@@ -112,55 +216,24 @@ public class DootDetailsActivity extends AppCompatActivity {
                 .show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_delete){
-//            LayoutInflater li = LayoutInflater.from(context);
-//            View view = li.inflate(R.layout.delete_dialog, null);
-//
-//
-//            ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.ToDonutDialog);
-//            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctw);
-//
-//            final TextView message = (TextView) view
-//                    .findViewById(R.id.tvDeleteMessage);
-//
-//            alertDialogBuilder
-//                    .setCancelable(false)
-//                    .setPositiveButton("Yes",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,int id) {
-//                                    Log.d(Integer.toString(taskId), "task ID");
-//                                    helper.deleteTask(taskId);
-//                                    TaskDetailsActivity.this.finish();
-//                                    Toast.makeText(getBaseContext(), "Task deleted!", Toast.LENGTH_SHORT).show();
-//                                }
-//                            })
-//                    .setNegativeButton("No",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//            AlertDialog alertDialog = alertDialogBuilder.create();
-//            alertDialog.setTitle("Are you sure you want to delete this task?");
-//            alertDialog.show();
-            showDeleteDialog();
-        } else if(item.getItemId() == R.id.action_edit) {
-            Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
-            intent.putExtra("EXTRA_ID", id);
-            intent.putExtra("EXTRA_NAME", name);
-            intent.putExtra("EXTRA_DOO_DATE", dooDate);
-            intent.putExtra("EXTRA_PRIORITY", priority);
-            intent.putExtra("EXTRA_STATUS", status);
-            intent.putExtra("EXTRA_NOTES", notes);
-            startActivityForResult(intent,EDIT_REQUEST);
-        } else if(item.getItemId() == R.id.action_back) {
-            DootDetailsActivity.this.finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if(item.getItemId() == R.id.action_delete){
+//            showDeleteDialog();
+//        } else if(item.getItemId() == R.id.action_edit) {
+//            Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
+//            intent.putExtra("EXTRA_ID", id);
+//            intent.putExtra("EXTRA_NAME", name);
+//            intent.putExtra("EXTRA_DOO_DATE", dooDate);
+//            intent.putExtra("EXTRA_PRIORITY", priority);
+//            intent.putExtra("EXTRA_STATUS", status);
+//            intent.putExtra("EXTRA_NOTES", notes);
+//            startActivityForResult(intent,EDIT_REQUEST);
+//        } else if(item.getItemId() == R.id.action_back) {
+//            DootDetailsActivity.this.finish();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -173,10 +246,10 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvPriority.setText(doot.getPriority());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.details_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.details_menu, menu);
+//        return true;
+//    }
 }

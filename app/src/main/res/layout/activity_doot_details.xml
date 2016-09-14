@@ -92,7 +92,7 @@
                 android:id="@+id/ivStatus"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:src="@drawable/status"
+                android:src="@drawable/check_circle"
                 android:paddingRight="10dp"/>
 
             <TextView
