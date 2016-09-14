@@ -49,7 +49,7 @@ public class NavAdapter extends BaseAdapter {
             view = convertView;
         }
 
-        TextView titleView = (TextView) view.findViewById(R.id.tvNavSubtitle);
+        TextView titleView = (TextView) view.findViewById(R.id.tvNavTitle);
         TextView subtitleView = (TextView) view.findViewById(R.id.tvNavSubtitle);
         ImageView iconView = (ImageView) view.findViewById(R.id.ivNavIcon);
 

@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navPane = (RelativeLayout) findViewById(R.id.navPane);
-        NavItem add = new NavItem("Add", "The more doots, the better", R.drawable.priority);
+        NavItem add = new NavItem("Add", "The more doots, the better", R.drawable.plus_nav);
         navList.add(add);
-        navList.add(new NavItem("All Done", "Check off the whole list!", R.drawable.status));
+        navList.add(new NavItem("All Done", "Check off the whole list!", R.drawable.done_all));
         lvNavList = (ListView) findViewById(R.id.lvNavList);
-        NavAdapter navAdapter = new NavAdapter(MainActivity.this, navList);
+        final NavAdapter navAdapter = new NavAdapter(MainActivity.this, navList);
         lvNavList.setAdapter(navAdapter);
         lvNavList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -111,8 +111,10 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
                     dialog.show(fm, "New Doot");
                 } else if (item.getNavTitle().equals("All Done")) {
                     for (Doot d : dh.getAllDoots()) {
-                        adapter.getItem
+                        dh.finishDoot(d.getId());
+                        // TODO: add confetti
                     }
+                    navAdapter.notifyDataSetChanged();
                 }
                 drawerLayout.closeDrawer(navPane);
             }
