@@ -13,4 +13,28 @@ public class NavItem {
         navSubtitle = subtitle;
         navIcon = icon;
     }
+
+    public int getNavIcon() {
+        return navIcon;
+    }
+
+    public void setNavIcon(int navIcon) {
+        this.navIcon = navIcon;
+    }
+
+    public String getNavTitle() {
+        return navTitle;
+    }
+
+    public void setNavTitle(String navTitle) {
+        this.navTitle = navTitle;
+    }
+
+    public String getNavSubtitle() {
+        return navSubtitle;
+    }
+
+    public void setNavSubtitle(String navSubtitle) {
+        this.navSubtitle = navSubtitle;
+    }
 }

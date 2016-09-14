@@ -110,6 +110,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return dootList;
     }
 
+    public ArrayList<Doot> finishAllDoots() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<Doot> dootList = new ArrayList<Doot>();
+        ContentValues cv = new ContentValues();
+        Cursor cursor = db.query(DATABASE_TABLE_NAME, new String[]{COLUMN1, COLUMN2, COLUMN3, COLUMN4, COLUMN5, COLUMN6}, COLUMN1 + "=?", new String[]{"" + id},null,null,null,null);
+
+        for (Doot d : dootList) {
+            cv.put(COLUMN5, "Done");
+            return db.update(DATABASE_TABLE_NAME, cv, COLUMN5 + "=?", new String[]{id.toString()});
+        }
+    }
+
     public Doot getDoot(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 

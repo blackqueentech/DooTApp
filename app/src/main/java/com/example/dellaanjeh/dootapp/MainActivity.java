@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
     TextView tvEmptyList;
     DBHelper dh;
     Button btnAdd;
+    NavItem item;
     FloatingActionButton fab;
     FragmentManager fm = getSupportFragmentManager();
 
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View emptyView = findViewById(R.id.empty);
         lvDoots = (ListView) findViewById(R.id.lvDoots);
         fab = (FloatingActionButton) findViewById(R.id.fabAdd);
@@ -80,10 +84,11 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navPane = (RelativeLayout) findViewById(R.id.navPane);
-        navList.add(new NavItem("Add", "The more doots, the better", R.drawable.priority));
+        NavItem add = new NavItem("Add", "The more doots, the better", R.drawable.priority);
+        navList.add(add);
         navList.add(new NavItem("All Done", "Check off the whole list!", R.drawable.status));
         lvNavList = (ListView) findViewById(R.id.lvNavList);
-        NavAdapter navAdapter = new NavAdapter(this, navList);
+        NavAdapter navAdapter = new NavAdapter(MainActivity.this, navList);
         lvNavList.setAdapter(navAdapter);
         lvNavList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -96,6 +101,41 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
 
             }
         });
+
+        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
+                if (item.getNavTitle().equals("Add")) {
+                    AddToListDialog dialog = new AddToListDialog();
+                    dialog.show(fm, "New Doot");
+                } else if (item.getNavTitle().equals("All Done")) {
+                    for (Doot d : dh.getAllDoots()) {
+                        adapter.getItem
+                    }
+                }
+                drawerLayout.closeDrawer(navPane);
+            }
+        });
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                Log.d("something", "onDrawerClosed: " + getTitle());
+
+                invalidateOptionsMenu();
+            }
+        };
+
+        drawerLayout.addDrawerListener(drawerToggle);
 
     }
 
@@ -114,6 +154,21 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         // Close the drawer
         drawerLayout.closeDrawer(navPane);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
 
     @Override
     public void onItemAdded() {

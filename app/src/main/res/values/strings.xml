@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DootApp</string>
+    <string name="drawer_open">Opening Menu</string>
+    <string name="drawer_close">Closing Menu</string>
 </resources>
