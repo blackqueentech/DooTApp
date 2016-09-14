@@ -20,10 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationItem;
-import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView;
-import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItemClickListener;
-import com.michaldrabik.tapbarmenulib.TapBarMenu;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.text.SimpleDateFormat;
@@ -42,7 +38,6 @@ public class EditActivity extends AppCompatActivity {
     ArrayAdapter<String> statusAdapter, priorityAdapter;
     String name, priority, dooDate, status, notes;
     Integer id;
-    BottomNavigationView navbar;
 
     DBHelper helper;
 
@@ -104,37 +99,6 @@ public class EditActivity extends AppCompatActivity {
         spStatus.setSelection(getIndex(spStatus, status));
         spStatus.setAdapter(statusAdapter);
         dbHelper = new DBHelper(this);
-
-        navbar = (BottomNavigationView) findViewById(R.id.navbar);
-        BottomNavigationItem save = new BottomNavigationItem
-                ("Save", ContextCompat.getColor(this, R.color.primary), R.drawable.save);
-        BottomNavigationItem delete = new BottomNavigationItem
-                ("Delete", ContextCompat.getColor(this, R.color.primary), R.drawable.trash);
-        navbar.addTab(save);
-        navbar.addTab(delete);
-
-
-        navbar.setOnBottomNavigationItemClickListener(new OnBottomNavigationItemClickListener() {
-            @Override
-            public void onNavigationItemClick(int index) {
-                switch (index) {
-                    case 0:
-                        String name = etName.getText().toString();
-                        String notes = etNotes.getText().toString();
-                        String status = String.valueOf(spStatus.getSelectedItem());
-                        String doodate = etDooDate.getText().toString();
-                        String priority = String.valueOf(spPriority.getSelectedItem());
-                        dbHelper.editDoot(id, name, doodate, notes, status, priority);
-                        setResult(Activity.RESULT_OK);
-                        EditActivity.this.finish();
-                        Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        showDeleteDialog();
-                        break;
-                }
-            }
-        });
 
     }
 
