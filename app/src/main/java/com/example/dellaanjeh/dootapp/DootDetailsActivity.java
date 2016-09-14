@@ -100,8 +100,8 @@ public class DootDetailsActivity extends AppCompatActivity {
                     //DootDetailsActivity.this.finish();
                     //Toast.makeText(getBaseContext(), "Nice, you finished your doot!", Toast.LENGTH_SHORT).show();
                 } else {
-                    sbtnDone.setVisibility(View.INVISIBLE);
-                    //helper.changeDootStatus(id, "To Do");
+                    //sbtnDone.setVisibility(View.INVISIBLE);
+                    helper.changeDootStatus(id, "To Do");
                     //DootDetailsActivity.this.finish();
                     //Toast.makeText(getBaseContext(), "Doot updated!", Toast.LENGTH_SHORT).show();
                 }
