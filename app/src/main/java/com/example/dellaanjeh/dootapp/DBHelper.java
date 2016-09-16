@@ -62,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(DATABASE_TABLE_NAME, null, cv);
     }
 
-    public long editDoot(Integer id, String name, String dooDate, String notes, String status, String priority) {
+    public long editDoot(Long id, String name, String dooDate, String notes, String status, String priority) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN2, name);
@@ -73,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.update(DATABASE_TABLE_NAME, cv, COLUMN1 + "=?", new String[]{id.toString()});
     }
 
-    public long changeDootStatus(Integer id, String status) {
+    public long changeDootStatus(Long id, String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN5, status);
@@ -117,7 +117,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.update(DATABASE_TABLE_NAME, cv, COLUMN1 + "=?", new String[]{id.toString()});
     }
 
-    public Doot getDoot(int id){
+    public Doot getDoot(long id){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(DATABASE_TABLE_NAME, new String[]{COLUMN1, COLUMN2, COLUMN3, COLUMN4, COLUMN5, COLUMN6}, COLUMN1 + "=?", new String[]{"" + id},null,null,null,null);

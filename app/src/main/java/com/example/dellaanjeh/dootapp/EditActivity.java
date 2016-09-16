@@ -38,19 +38,17 @@ public class EditActivity extends AppCompatActivity {
 
     TextView tvName, tvPriority, tvNotes, tvStatus, tvDooDate;
     EditText etName, etNotes, etDooDate;
-    DBHelper dbHelper;
     Spinner spStatus, spPriority;
     String[] statuses, priorities;
     DatePickerDialog dooDatePicker;
     SimpleDateFormat dateFormat;
     ArrayAdapter<String> statusAdapter, priorityAdapter;
     String name, priority, dooDate, status, notes;
-    Integer id, dootId;
+    Long id, dootId;
     ListView lvNavList;
     RelativeLayout navPane;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    FragmentManager fm = getSupportFragmentManager();
     ArrayList<NavItem> navList = new ArrayList<NavItem>();
     ShineButton sbtnSave;
     DBHelper helper;
@@ -68,8 +66,8 @@ public class EditActivity extends AppCompatActivity {
             dooDate = extras.getString("EXTRA_DOO_DATE");
             notes = extras.getString("EXTRA_NOTES");
             status = extras.getString("EXTRA_STATUS");
-            id = extras.getInt("EXTRA_ID");
-            dootId = id;
+            id = extras.getLong("EXTRA_ID");
+            //dootId = id;
         }
         tvName = (TextView) findViewById(R.id.tvName);
         etName = (EditText) findViewById(R.id.etName);
@@ -114,7 +112,7 @@ public class EditActivity extends AppCompatActivity {
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spStatus.setSelection(getIndex(spStatus, status));
         spStatus.setAdapter(statusAdapter);
-        dbHelper = new DBHelper(this);
+        helper = new DBHelper(this);
 
         sbtnSave = (ShineButton) findViewById(R.id.sbtnSave);
         if (sbtnSave != null) sbtnSave.init(this);
@@ -126,7 +124,7 @@ public class EditActivity extends AppCompatActivity {
                 String status = String.valueOf(spStatus.getSelectedItem());
                 String doodate = etDooDate.getText().toString();
                 String priority = String.valueOf(spPriority.getSelectedItem());
-                dbHelper.editDoot(id, name, doodate, notes, status, priority);
+                helper.editDoot(id, name, doodate, notes, status, priority);
                 setResult(Activity.RESULT_OK);
                 EditActivity.this.finish();
                 Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
@@ -153,29 +151,29 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
-                if (item.getNavTitle().equals("Save")) {
-                    String name = etName.getText().toString();
-                    String notes = etNotes.getText().toString();
-                    String status = String.valueOf(spStatus.getSelectedItem());
-                    String doodate = etDooDate.getText().toString();
-                    String priority = String.valueOf(spPriority.getSelectedItem());
-                    dbHelper.editDoot(dootId, name, doodate, notes, status, priority);
-                    setResult(Activity.RESULT_OK);
-                    EditActivity.this.finish();
-                    Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
-                } else if (item.getNavTitle().equals("Delete")) {
-                    showDeleteDialog();
-                } else if (item.getNavTitle().equals("Cancel")) {
-                    setResult(Activity.RESULT_CANCELED);
-                    EditActivity.this.finish();
-                }
-                drawerLayout.closeDrawer(navPane);
-            }
-        });
+//        lvNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
+//                if (item.getNavTitle().equals("Save")) {
+//                    String name = etName.getText().toString();
+//                    String notes = etNotes.getText().toString();
+//                    String status = String.valueOf(spStatus.getSelectedItem());
+//                    String doodate = etDooDate.getText().toString();
+//                    String priority = String.valueOf(spPriority.getSelectedItem());
+//                    helper.editDoot(id, name, doodate, notes, status, priority);
+//                    setResult(Activity.RESULT_OK);
+//                    EditActivity.this.finish();
+//                    Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
+//                } else if (item.getNavTitle().equals("Delete")) {
+//                    showDeleteDialog();
+//                } else if (item.getNavTitle().equals("Cancel")) {
+//                    setResult(Activity.RESULT_CANCELED);
+//                    EditActivity.this.finish();
+//                }
+//                drawerLayout.closeDrawer(navPane);
+//            }
+//        });
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -238,7 +236,6 @@ public class EditActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(Integer.toString(id), "doot ID");
                         helper.deleteDoot(id);
                         EditActivity.this.finish();
                         Toast.makeText(getBaseContext(), "Doot deleted!", Toast.LENGTH_SHORT).show();

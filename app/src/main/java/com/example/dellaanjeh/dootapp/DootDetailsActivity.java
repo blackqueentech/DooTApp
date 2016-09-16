@@ -46,11 +46,10 @@ public class DootDetailsActivity extends AppCompatActivity {
     TextView tvPriority;
     String name, dooDate, status, notes, priority;
     DBHelper helper;
-    Button btnDone;
     ShineButton sbtnDone;
     DootListAdapter adapter;
     ArrayList<Doot> dootList;
-    Integer id;
+    Long id;
     ListView lvNavList;
     RelativeLayout navPane;
     private ActionBarDrawerToggle drawerToggle;
@@ -82,7 +81,7 @@ public class DootDetailsActivity extends AppCompatActivity {
             dooDate = extras.getString("EXTRA_DOO_DATE");
             notes = extras.getString("EXTRA_NOTES");
             status = extras.getString("EXTRA_STATUS");
-            id = extras.getInt("EXTRA_ID");
+            id = extras.getLong("EXTRA_ID");
         }
 
         tvName.setText(name);
@@ -142,7 +141,7 @@ public class DootDetailsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
                 if (item.getNavTitle().equals("Edit")) {
-                    Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
+                    Intent intent = new Intent(DootDetailsActivity.this, EditDootActivity.class);
                     intent.putExtra("EXTRA_ID", id);
                     intent.putExtra("EXTRA_NAME", name);
                     intent.putExtra("EXTRA_DOO_DATE", dooDate);
@@ -220,7 +219,6 @@ public class DootDetailsActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(Integer.toString(id), "doot ID");
                         helper.deleteDoot(id);
                         DootDetailsActivity.this.finish();
                         Toast.makeText(getBaseContext(), "Doot deleted!", Toast.LENGTH_SHORT).show();
