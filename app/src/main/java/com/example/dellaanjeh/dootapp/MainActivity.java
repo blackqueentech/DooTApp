@@ -1,6 +1,7 @@
 package com.example.dellaanjeh.dootapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,12 +14,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.jinatonic.confetti.CommonConfetti;
 
 import java.util.ArrayList;
 
@@ -35,12 +40,11 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
     ArrayList<NavItem> navList = new ArrayList<NavItem>();
     DootListAdapter adapter;
     TextView tvEmptyList;
+    ImageView ivFace;
     DBHelper dh;
-    Button btnAdd;
-    NavItem item;
     FloatingActionButton fab;
     FragmentManager fm = getSupportFragmentManager();
-
+    ViewGroup container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        container = (ViewGroup) findViewById(R.id.mainContent);
         View emptyView = findViewById(R.id.empty);
         lvDoots = (ListView) findViewById(R.id.lvDoots);
         fab = (FloatingActionButton) findViewById(R.id.fabAdd);
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
         });
 
         tvEmptyList = (TextView) emptyView.findViewById(R.id.tvEmptyList);
+        ivFace = (ImageView) emptyView.findViewById(R.id.ivFace);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
             }
         });
 
-        lvDoots.setEmptyView(tvEmptyList);
+        lvDoots.setEmptyView(emptyView);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navPane = (RelativeLayout) findViewById(R.id.navPane);
@@ -112,9 +118,10 @@ public class MainActivity extends AppCompatActivity implements AddToListDialog.A
                 } else if (item.getNavTitle().equals("All Done")) {
                     for (Doot d : dh.getAllDoots()) {
                         dh.finishDoot(d.getId());
-                        // TODO: add confetti
                     }
                     navAdapter.notifyDataSetChanged();
+                    CommonConfetti.rainingConfetti(container, new int[] { Color.YELLOW, Color.GREEN, Color.MAGENTA })
+                            .stream(3000);
                 }
                 drawerLayout.closeDrawer(navPane);
             }

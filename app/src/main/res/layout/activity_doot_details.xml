@@ -125,7 +125,7 @@
             app:btn_fill_color="#999933"
             app:siShape="@drawable/check"
             android:gravity="bottom"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center" />
 
     </LinearLayout>
 

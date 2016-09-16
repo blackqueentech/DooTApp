@@ -3,6 +3,7 @@ package com.example.dellaanjeh.dootapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -89,6 +90,14 @@ public class DootDetailsActivity extends AppCompatActivity {
         tvDooDate.setText(dooDate);
         tvNotes.setText(notes);
         tvStatus.setText(status);
+
+        if (priority.equals("Low")) {
+            tvPriority.setTextColor(Color.GREEN);
+        } else if (priority.equals("Medium")) {
+            tvPriority.setTextColor(Color.YELLOW);
+        } else {
+            tvPriority.setTextColor(Color.RED);
+        }
 
         sbtnDone = (ShineButton) findViewById(R.id.sbtnDone);
         if (sbtnDone != null) sbtnDone.init(this);

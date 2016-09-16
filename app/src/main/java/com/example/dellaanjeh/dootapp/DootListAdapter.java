@@ -1,6 +1,7 @@
 package com.example.dellaanjeh.dootapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,8 @@ public class DootListAdapter extends BaseAdapter {
 
         }
 
+        TextView tvPriority = (TextView) convertView.findViewById(R.id.tvPriority);
+        tvPriority.setText(item.getPriority());
         TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
         tvName.setText(item.getName());
         TextView tvDooDate = (TextView) convertView.findViewById(R.id.tvDate);
@@ -56,6 +59,14 @@ public class DootListAdapter extends BaseAdapter {
             tvName.setPaintFlags(tvName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }else{
             tvName.setPaintFlags(tvName.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+
+        if (item.getPriority().equals("Low")) {
+            tvPriority.setTextColor(Color.GREEN);
+        } else if (item.getPriority().equals("Medium")) {
+            tvPriority.setTextColor(Color.YELLOW);
+        } else {
+            tvPriority.setTextColor(Color.RED);
         }
 
         return convertView;
