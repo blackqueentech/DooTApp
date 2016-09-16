@@ -34,7 +34,7 @@ The following **optional** features are implemented:
 * [ ] Unique and simple UI that focuses on icons
 * [ ] Utilizes icons from [Google's Material Design Icon set](https://design.google.com/icons/).
 * [ ] Priority is an attribute available for all dooTs.
-* [ ] Some fun and creative libraries are used in the app, I feel like listing them all would be a [spoiler](https://github.com/ChadCSong/ShineButton) [;)](https://github.com/jinatonic/confetti)
+* [ ] Some fun and creative libraries are used in the app, I feel like listing them all would [be](https://github.com/jinatonic/confetti) [a](https://github.com/yarolegovich/LovelyDialog) [spoiler](https://github.com/ChadCSong/ShineButton) ;)
 * [ ] A hamburger menu from a DrawerLayout is used for all actions in the app
 
 Walkthrough
@@ -48,7 +48,7 @@ Notes
 -----
 
 Because I already completed an app similar to this for the last prework, I wanted to make
-sure this iteration was rife with extra fun tidbits and details that I didn't have the time or ability to add last time. They always say that the devil is in the details, and they are correct. I probably spent equal amounts of time searching for up to date Android libraries and figuring out how the ones I did find worked. But I came out learning much more about what makes an app special and I feel confident that I can utilize all the fun and amazing tools available for developers in my future works. Also, and I may write a blog post on this, never EVER name something id. That nearly made me pull my hair out in frustration, and I really like my hair. Thanks (again) for the opportunity to apply! 
+sure this iteration was rife with extra fun tidbits and details that I didn't have the time or ability to add last time. They always say that the devil is in the details, and they are correct. I probably spent equal amounts of time searching for up to date Android libraries and figuring out how the ones I did find worked. But I came out learning much more about what makes an app special and I feel confident that I can utilize all the fun and amazing tools available for developers in my future works. Also, and I may write a blog post on this, never EVER name something id. That nearly made me pull my hair out in frustration, and I really like my hair. Thanks (again) for the opportunity to apply!
 
 
 ## Creator
