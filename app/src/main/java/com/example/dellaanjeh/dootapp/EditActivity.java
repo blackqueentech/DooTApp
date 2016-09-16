@@ -4,22 +4,17 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -38,19 +33,17 @@ public class EditActivity extends AppCompatActivity {
 
     TextView tvName, tvPriority, tvNotes, tvStatus, tvDooDate;
     EditText etName, etNotes, etDooDate;
-    DBHelper dbHelper;
     Spinner spStatus, spPriority;
     String[] statuses, priorities;
     DatePickerDialog dooDatePicker;
     SimpleDateFormat dateFormat;
     ArrayAdapter<String> statusAdapter, priorityAdapter;
     String name, priority, dooDate, status, notes;
-    Integer id, dootId;
+    Integer dootId;
     ListView lvNavList;
     RelativeLayout navPane;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    FragmentManager fm = getSupportFragmentManager();
     ArrayList<NavItem> navList = new ArrayList<NavItem>();
     ShineButton sbtnSave;
     DBHelper helper;
@@ -68,8 +61,7 @@ public class EditActivity extends AppCompatActivity {
             dooDate = extras.getString("EXTRA_DOO_DATE");
             notes = extras.getString("EXTRA_NOTES");
             status = extras.getString("EXTRA_STATUS");
-            id = extras.getInt("EXTRA_ID");
-            dootId = id;
+            dootId = extras.getInt("EXTRA_ID");
         }
         tvName = (TextView) findViewById(R.id.tvName);
         etName = (EditText) findViewById(R.id.etName);
@@ -114,7 +106,7 @@ public class EditActivity extends AppCompatActivity {
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spStatus.setSelection(getIndex(spStatus, status));
         spStatus.setAdapter(statusAdapter);
-        dbHelper = new DBHelper(this);
+        helper = new DBHelper(this);
 
         sbtnSave = (ShineButton) findViewById(R.id.sbtnSave);
         if (sbtnSave != null) sbtnSave.init(this);
@@ -126,7 +118,7 @@ public class EditActivity extends AppCompatActivity {
                 String status = String.valueOf(spStatus.getSelectedItem());
                 String doodate = etDooDate.getText().toString();
                 String priority = String.valueOf(spPriority.getSelectedItem());
-                dbHelper.editDoot(id, name, doodate, notes, status, priority);
+                helper.editDoot(dootId, name, doodate, notes, status, priority);
                 setResult(Activity.RESULT_OK);
                 EditActivity.this.finish();
                 Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
@@ -136,7 +128,6 @@ public class EditActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navPane = (RelativeLayout) findViewById(R.id.navPane);
         navList.add(new NavItem("Save", "New Doot, new details!", R.drawable.save));
-        navList.add(new NavItem("Delete", "Good-bye!", R.drawable.delete));
         navList.add(new NavItem("Cancel", "When you don't wanna edit anymore", R.drawable.cancel));
         lvNavList = (ListView) findViewById(R.id.lvNavList);
         final NavAdapter navAdapter = new NavAdapter(EditActivity.this, navList);
@@ -163,13 +154,11 @@ public class EditActivity extends AppCompatActivity {
                     String status = String.valueOf(spStatus.getSelectedItem());
                     String doodate = etDooDate.getText().toString();
                     String priority = String.valueOf(spPriority.getSelectedItem());
-                    dbHelper.editDoot(dootId, name, doodate, notes, status, priority);
+                    helper.editDoot(dootId, name, doodate, notes, status, priority);
                     setResult(Activity.RESULT_OK);
                     EditActivity.this.finish();
                     Toast.makeText(getBaseContext(), "Doot has been updated!", Toast.LENGTH_SHORT).show();
-                } else if (item.getNavTitle().equals("Delete")) {
-                    showDeleteDialog();
-                } else if (item.getNavTitle().equals("Cancel")) {
+                }  else if (item.getNavTitle().equals("Cancel")) {
                     setResult(Activity.RESULT_CANCELED);
                     EditActivity.this.finish();
                 }
@@ -226,26 +215,6 @@ public class EditActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
-    }
-
-    private void showDeleteDialog() {
-        new LovelyStandardDialog(this)
-                .setTopColorRes(R.color.delete)
-                .setButtonsColorRes(R.color.primary_dark)
-                .setIcon(R.drawable.white_trash)
-                .setTitle("Are you sure you want to delete your doot?")
-                .setMessage("This is a strong edit.")
-                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d(Integer.toString(id), "doot ID");
-                        helper.deleteDoot(id);
-                        EditActivity.this.finish();
-                        Toast.makeText(getBaseContext(), "Doot deleted!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
     }
 
     private int getIndex(Spinner spinner, String myString) {

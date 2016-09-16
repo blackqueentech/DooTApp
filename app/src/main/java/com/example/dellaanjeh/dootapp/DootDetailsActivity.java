@@ -46,11 +46,10 @@ public class DootDetailsActivity extends AppCompatActivity {
     TextView tvPriority;
     String name, dooDate, status, notes, priority;
     DBHelper helper;
-    Button btnDone;
     ShineButton sbtnDone;
     DootListAdapter adapter;
     ArrayList<Doot> dootList;
-    Integer id;
+    Integer dootId;
     ListView lvNavList;
     RelativeLayout navPane;
     private ActionBarDrawerToggle drawerToggle;
@@ -82,7 +81,7 @@ public class DootDetailsActivity extends AppCompatActivity {
             dooDate = extras.getString("EXTRA_DOO_DATE");
             notes = extras.getString("EXTRA_NOTES");
             status = extras.getString("EXTRA_STATUS");
-            id = extras.getInt("EXTRA_ID");
+            dootId = extras.getInt("EXTRA_ID");
         }
 
         tvName.setText(name);
@@ -95,7 +94,7 @@ public class DootDetailsActivity extends AppCompatActivity {
             tvPriority.setTextColor(Color.GREEN);
         } else if (priority.equals("Medium")) {
             tvPriority.setTextColor(Color.YELLOW);
-        } else {
+        } else if (priority.equals("High")){
             tvPriority.setTextColor(Color.RED);
         }
 
@@ -105,12 +104,12 @@ public class DootDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!status.equals("Done")) {
-                    helper.changeDootStatus(id, "Done");
+                    helper.changeDootStatus(dootId, "Done");
                     //DootDetailsActivity.this.finish();
                     //Toast.makeText(getBaseContext(), "Nice, you finished your doot!", Toast.LENGTH_SHORT).show();
                 } else {
                     //sbtnDone.setVisibility(View.INVISIBLE);
-                    helper.changeDootStatus(id, "To Do");
+                    helper.changeDootStatus(dootId, "To Do");
                     //DootDetailsActivity.this.finish();
                     //Toast.makeText(getBaseContext(), "Doot updated!", Toast.LENGTH_SHORT).show();
                 }
@@ -143,7 +142,7 @@ public class DootDetailsActivity extends AppCompatActivity {
                 NavItem item = (NavItem) lvNavList.getItemAtPosition(position);
                 if (item.getNavTitle().equals("Edit")) {
                     Intent intent = new Intent(DootDetailsActivity.this, EditActivity.class);
-                    intent.putExtra("EXTRA_ID", id);
+                    intent.putExtra("EXTRA_ID", dootId);
                     intent.putExtra("EXTRA_NAME", name);
                     intent.putExtra("EXTRA_DOO_DATE", dooDate);
                     intent.putExtra("EXTRA_PRIORITY", priority);
@@ -220,8 +219,8 @@ public class DootDetailsActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(Integer.toString(id), "doot ID");
-                        helper.deleteDoot(id);
+                        Log.d(Integer.toString(dootId), "doot ID");
+                        helper.deleteDoot(dootId);
                         DootDetailsActivity.this.finish();
                         Toast.makeText(getBaseContext(), "Doot deleted!", Toast.LENGTH_SHORT).show();
                     }
@@ -233,7 +232,7 @@ public class DootDetailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Doot doot = helper.getDoot(id);
+        Doot doot = helper.getDoot(dootId);
         tvName.setText(doot.getName());
         tvDooDate.setText(doot.getDooDate());
         tvNotes.setText(doot.getNotes());

@@ -25,18 +25,18 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/tvNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:textSize="18dp"
-                android:text="Name"
-                android:textStyle="bold"
-                android:textColor="@color/primary_dark"/>
+            <ImageView
+                android:id="@+id/ivTitle"
+                android:src="@drawable/title"
+                android:layout_weight="0.15"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="left"/>
 
             <EditText
                 android:id="@+id/etName"
+                android:gravity="left"
                 android:ems="10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -50,16 +50,14 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/tvPriorityLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:textSize="18dp"
-                android:text="Priority"
-                android:textStyle="bold"
-                android:textColor="@color/primary_dark"/>
-
+            <ImageView
+                android:id="@+id/ivPriority"
+                android:src="@drawable/priority"
+                android:layout_weight="0.15"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="110dp"
+                android:layout_gravity="left"/>
             <Spinner
                 android:id="@+id/spPriority"
                 android:layout_width="wrap_content"
@@ -76,15 +74,14 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/tvDooDateLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:textSize="18dp"
-                android:text="Doo Date"
-                android:textStyle="bold"
-                android:textColor="@color/primary_dark"/>
+            <ImageView
+                android:id="@+id/ivDooDate"
+                android:src="@drawable/date"
+                android:layout_weight="0.15"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="left"/>
 
             <EditText
                 android:id="@+id/etDooDate"
@@ -102,15 +99,14 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/tvStatusLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:textSize="18dp"
-                android:text="Status"
-                android:textStyle="bold"
-                android:textColor="@color/primary_dark"/>
+            <ImageView
+                android:id="@+id/ivStatus"
+                android:src="@drawable/check_circle"
+                android:layout_weight="0.15"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="130dp"
+                android:layout_gravity="left"/>
 
             <Spinner
                 android:id="@+id/spStatus"
@@ -128,15 +124,14 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/tvNotesLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:textSize="18dp"
-                android:text="Notes"
-                android:textStyle="bold"
-                android:textColor="@color/primary_dark"/>
+            <ImageView
+                android:id="@+id/ivNotes"
+                android:src="@drawable/notes"
+                android:layout_weight="0.15"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="left"/>
 
             <EditText
                 android:id="@+id/etNotes"
