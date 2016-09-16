@@ -6,7 +6,7 @@ Doo your dooTs and doo them well!
 
 Submitted by: Della Anjeh
 
-Time spent: 17 hours spent in total (libraries are *fun*.)
+Time spent: 10 hours spent in total (libraries are *fun*.)
 
 Support
 -------
@@ -48,7 +48,7 @@ Notes
 -----
 
 Because I already completed an app similar to this for the last prework, I wanted to make
-sure this iteration was rife with extra fun tidbits and details that I didn't have the time or ability to add last time. They always say that the devil is in the details, and they are correct. I probably spent equal amounts of time searching for up to date Android libraries and figuring out how the ones I did find worked. But I came out learning much more about what makes an app special and I feel confident that I can utilize all the fun and amazing tools available for developers in my future works. Thanks (again) for the opportunity to apply!
+sure this iteration was rife with extra fun tidbits and details that I didn't have the time or ability to add last time. They always say that the devil is in the details, and they are correct. I probably spent equal amounts of time searching for up to date Android libraries and figuring out how the ones I did find worked. But I came out learning much more about what makes an app special and I feel confident that I can utilize all the fun and amazing tools available for developers in my future works. Also, and I may write a blog post on this, never EVER name something id. That nearly made me pull my hair out in frustration, and I really like my hair. Thanks (again) for the opportunity to apply! 
 
 
 ## Creator
